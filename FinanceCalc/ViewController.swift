@@ -83,6 +83,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         updateView()
     }
     func updateView() {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2
         job = Double(jobTextField.text ?? "0") ?? 0.00
         let rencount = Double(renewalCountTextField.text ?? "0") ?? 0.00
         let renamt = Double(renewalsTextField.text ?? "0") ?? 0.00
@@ -104,21 +107,23 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         let loanTermSt = loanMonthsButton.currentTitle
         loanTerm = Double(loanTermSt ?? "12")!
         monthlyPayment = (ratePerPeriod / (1 - (pow(1 + ratePerPeriod, loanTerm * -1)))) * amountFinanced
+        let monthlyPaymtStr = NumberFormatter.localizedString(from: NSNumber(value: monthlyPayment), number: .currency)
+        monthlyPayment = formatter.number(from: monthlyPaymtStr) as! Double
         totalPayments = loanTerm * monthlyPayment
         financeCharge = totalPayments - amountFinanced
         totalFinancedJob = totalPayments + downPayment
         // put it all in a string
-        summaryTextBox.text = "Job Amount: \t\t" + String(job) + "\n"
-            + "With Renewals: \t\t" + String(totalJob) + "\n"
-            + "Tax: \t\t\t\t" + String(tax) + "\n"
-            + "Total Cash Price: \t" + String(totalCash) + "\n"
-            + "Down Payment: \t\t" + String(downPayment) + "\n"
-            + "Amount Financed: \t" + String(amountFinanced) + "\n"
-            + "Monthly Payment: \t" + String(monthlyPayment) + "\n"
-            + "Number of Payments: \t" + String(loanTerm) + "\n"
-            + "Total of Payments: \t" + String(totalPayments) + "\n"
-            + "Finance Charge: \t" + String(financeCharge) + "\n"
-            + "Total Financed Job: \t" + String(totalFinancedJob)
+        summaryTextBox.text = "Job Amount: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: job), number: .currency) + "\n"
+            + "With Renewals: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: totalJob), number: .currency) + "\n"
+            + "Tax: \t\t\t\t" + NumberFormatter.localizedString(from: NSNumber(value: tax), number: .currency) + "\n"
+            + "Total Cash Price: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalCash), number: .currency) + "\n"
+            + "Down Payment: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: downPayment), number: .currency) + "\n"
+            + "Amount Financed: \t" + NumberFormatter.localizedString(from: NSNumber(value: amountFinanced), number: .currency) + "\n"
+            + "Monthly Payment: \t" + monthlyPaymtStr + "\n"
+            + "Number of Payments: " + String(format:"%.0f", loanTerm) + "\n"
+            + "Total of Payments: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalPayments), number: .currency) + "\n"
+            + "Finance Charge: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: financeCharge), number: .currency) + "\n"
+            + "Total Financed Job: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalFinancedJob), number: .currency)
     }
 
 
