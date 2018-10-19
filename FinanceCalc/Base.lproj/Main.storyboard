@@ -134,12 +134,20 @@
                                     <constraint firstItem="EpZ-Nq-tQE" firstAttribute="centerY" secondItem="Mjo-PX-mvX" secondAttribute="centerY" id="GcE-u6-WRu"/>
                                 </constraints>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOk-xQ-KsF" customClass="PDFView">
+                                <rect key="frame" x="0.0" y="325" width="1024" height="443"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gOk-xQ-KsF" secondAttribute="bottom" id="53a-pZ-iIX"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gOk-xQ-KsF" secondAttribute="trailing" id="6LW-hs-ZhT"/>
+                            <constraint firstItem="gOk-xQ-KsF" firstAttribute="top" secondItem="3t9-f5-xFh" secondAttribute="bottom" id="LdW-1c-GHv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3t9-f5-xFh" secondAttribute="trailing" constant="321" id="MN4-2l-Epi"/>
                             <constraint firstItem="3t9-f5-xFh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="34" id="SKI-Va-0cd"/>
                             <constraint firstItem="3t9-f5-xFh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="29" id="XVU-vh-iGS"/>
+                            <constraint firstItem="gOk-xQ-KsF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="z1j-i6-4NO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -148,6 +156,7 @@
                         <outlet property="financeRateButton" destination="olZ-0c-YP1" id="bB6-mO-AUh"/>
                         <outlet property="jobTextField" destination="kvP-pF-muf" id="28p-nj-T8E"/>
                         <outlet property="loanMonthsButton" destination="8EA-Nl-0cv" id="ja2-zG-EVK"/>
+                        <outlet property="pdfViewPane" destination="gOk-xQ-KsF" id="8bQ-f6-lpg"/>
                         <outlet property="renewalCountTextField" destination="si9-bl-XQr" id="NCc-xd-zKP"/>
                         <outlet property="renewalsTextField" destination="UnM-vb-9jU" id="but-08-pUJ"/>
                         <outlet property="summaryTextBox" destination="EpZ-Nq-tQE" id="tfV-fU-bbn"/>

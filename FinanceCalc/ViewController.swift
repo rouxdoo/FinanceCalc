@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import PDFKit
 
-class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, PDFViewDelegate {
     
     @IBOutlet weak var renewalsTextField: UITextField!
     @IBOutlet weak var renewalCountTextField: UITextField!
@@ -18,6 +19,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     @IBOutlet weak var downPercentButton: UIButton!
     @IBOutlet weak var loanMonthsButton: UIButton!
     @IBOutlet weak var summaryTextBox: UITextView!
+    @IBOutlet weak var pdfViewPane: PDFView!
     
     @IBAction func percentButton(_ sender: UIButton) {
         var percent = sender.currentTitle
@@ -68,12 +70,24 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
     var totalPayments = 0.00
     var totalFinancedJob = 0.00
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         jobTextField.delegate = self
         renewalsTextField.delegate = self
         renewalCountTextField.delegate = self
         summaryTextBox.delegate = self
+        pdfViewPane.delegate = self
+        
+        if let path = Bundle.main.path(forResource: "Mobility SMAC Fillable", ofType: "pdf") {
+            let url = URL(fileURLWithPath: path)
+            if let pdfDocument = PDFDocument(url: url) {
+                pdfViewPane.displayMode = .singlePageContinuous
+                pdfViewPane.autoScales = true
+                // pdfView.displayDirection = .horizontal
+                pdfViewPane.document = pdfDocument
+            }
+        }
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         // Do any additional setup after loading the view, typically from a nib.
@@ -82,10 +96,75 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         textField.resignFirstResponder()
         updateView()
     }
+    func updatePdf() {
+        let document = pdfViewPane.document
+        let annotations = document!.page(at: 0)?.annotations
+        for annotation in annotations! {
+            switch annotation.fieldName {
+            // this data fills mobility smac fillable -pdfescape.com
+            case "Buyer":
+                annotation.widgetStringValue = "Enter buyer's info..."
+            case "Service Address":
+                annotation.widgetStringValue = "Same as above"
+            case "TIL Apr":
+                annotation.widgetStringValue = String(Int(apr * 100)) + "% APR"
+            case "TIL Finance Charge":
+                annotation.widgetStringValue = financeCharge.asCurrency
+            case "TIL Amount Financed":
+                annotation.widgetStringValue = amountFinanced.asCurrency
+            case "TIL Total of Payments":
+                annotation.widgetStringValue = totalPayments.asCurrency
+            case "TIL Down Payment":
+                annotation.widgetStringValue = downPayment.asCurrency
+            case "TIL Total Sale Price":
+                annotation.widgetStringValue = totalFinancedJob.asCurrency
+            case "Number of Payments":
+                annotation.widgetStringValue = String(Int(loanTerm))
+            case "Payment Amount":
+                annotation.widgetStringValue = monthlyPayment.asCurrency
+            case "First Payment Date":
+                let pmtdate = Calendar.current.date(byAdding: .day, value: 45, to: Date())
+                let formatter = DateFormatter()
+                formatter.dateFormat = "MM/dd/yyyy"
+                annotation.widgetStringValue = formatter.string(from: pmtdate!)
+            case "Date":
+                let today = Calendar.current.date(byAdding: .second, value: 30, to: Date())
+                let formatter = DateFormatter()
+                formatter.dateFormat = "MM/dd/yyyy"
+                annotation.widgetStringValue = formatter.string(from: today!)
+            case .none:
+                annotation.widgetStringValue =  "case .none"
+            case .some(_):
+                annotation.widgetStringValue = "case .some(_)"
+            }
+        }
+        let annotations2 = document!.page(at: 1)?.annotations
+        for annotation in annotations2! {
+            switch annotation.fieldName {
+            case "Cash Price":
+                annotation.widgetStringValue = totalJob.asCurrency
+            case "Sales Tax":
+                annotation.widgetStringValue = tax.asCurrency
+            case "Total Cash Price":
+                annotation.widgetStringValue = totalCash.asCurrency
+            case "Down Payment":
+                annotation.widgetStringValue = downPayment.asCurrency
+            case "Amount Financed":
+                annotation.widgetStringValue = amountFinanced.asCurrency
+            case "Finance Charge":
+                annotation.widgetStringValue = financeCharge.asCurrency
+            case "Total of Payments":
+                annotation.widgetStringValue = totalPayments.asCurrency
+            case "Description of Services":
+                annotation.widgetStringValue = "Services...."
+            case .none:
+                annotation.widgetStringValue = "case .none"
+            case .some(_):
+                annotation.widgetStringValue = "case .some()"
+            }
+        }
+    }
     func updateView() {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 2
         job = Double(jobTextField.text ?? "0") ?? 0.00
         let rencount = Double(renewalCountTextField.text ?? "0") ?? 0.00
         let renamt = Double(renewalsTextField.text ?? "0") ?? 0.00
@@ -107,23 +186,24 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate 
         let loanTermSt = loanMonthsButton.currentTitle
         loanTerm = Double(loanTermSt ?? "12")!
         monthlyPayment = (ratePerPeriod / (1 - (pow(1 + ratePerPeriod, loanTerm * -1)))) * amountFinanced
-        let monthlyPaymtStr = NumberFormatter.localizedString(from: NSNumber(value: monthlyPayment), number: .currency)
-        monthlyPayment = formatter.number(from: monthlyPaymtStr) as! Double
+        let monthlyPaymtStr = monthlyPayment.asCurrency
+        monthlyPayment = monthlyPaymtStr.currencyToDouble()
         totalPayments = loanTerm * monthlyPayment
         financeCharge = totalPayments - amountFinanced
         totalFinancedJob = totalPayments + downPayment
         // put it all in a string
-        summaryTextBox.text = "Job Amount: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: job), number: .currency) + "\n"
-            + "With Renewals: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: totalJob), number: .currency) + "\n"
-            + "Tax: \t\t\t\t" + NumberFormatter.localizedString(from: NSNumber(value: tax), number: .currency) + "\n"
-            + "Total Cash Price: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalCash), number: .currency) + "\n"
-            + "Down Payment: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: downPayment), number: .currency) + "\n"
-            + "Amount Financed: \t" + NumberFormatter.localizedString(from: NSNumber(value: amountFinanced), number: .currency) + "\n"
+        summaryTextBox.text = "Job Amount: \t\t" + job.asCurrency + "\n"
+            + "With Renewals: \t\t" + totalJob.asCurrency + "\n"
+            + "Tax: \t\t\t\t" + tax.asCurrency + "\n"
+            + "Total Cash Price: \t" + totalCash.asCurrency + "\n"
+            + "Down Payment: \t\t" + downPayment.asCurrency + "\n"
+            + "Amount Financed: \t" + amountFinanced.asCurrency + "\n"
             + "Monthly Payment: \t" + monthlyPaymtStr + "\n"
-            + "Number of Payments: " + String(format:"%.0f", loanTerm) + "\n"
-            + "Total of Payments: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalPayments), number: .currency) + "\n"
-            + "Finance Charge: \t\t" + NumberFormatter.localizedString(from: NSNumber(value: financeCharge), number: .currency) + "\n"
-            + "Total Financed Job: \t" + NumberFormatter.localizedString(from: NSNumber(value: totalFinancedJob), number: .currency)
+            + "Number of Payments: " + String(Int(loanTerm)) + "\n"
+            + "Total of Payments: \t" + totalPayments.asCurrency + "\n"
+            + "Finance Charge: \t\t" + financeCharge.asCurrency + "\n"
+            + "Total Financed Job: \t" + totalFinancedJob.asCurrency
+        updatePdf()
     }
 
 
