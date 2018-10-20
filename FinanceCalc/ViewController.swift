@@ -21,6 +21,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     @IBOutlet weak var summaryTextBox: UITextView!
     @IBOutlet weak var pdfViewPane: PDFView!
     
+    let documentInteractionController = UIDocumentInteractionController()
+    
     @IBAction func percentButton(_ sender: UIButton) {
         var percent = sender.currentTitle
         let alertController = UIAlertController(title: "Enter Percentage", message: "Enter the percentage amount", preferredStyle: .alert)
@@ -56,6 +58,27 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         self.present(alertController, animated: true, completion: nil)
     }
     
+    @IBAction func shareForm(_ sender: UIBarButtonItem) {
+        let tmpURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent("SMAC.pdf")
+        pdfViewPane.document?.write(to: tmpURL)
+        documentInteractionController.url = tmpURL
+        documentInteractionController.uti = "com.adobe.pdf"
+        //documentInteractionController.presentPreview(animated: true)
+        documentInteractionController.presentOptionsMenu(from: sender, animated: true)
+    }
+    
+    @IBAction func clearForm(_ sender: Any) {
+        jobTextField.text = ""
+        renewalsTextField.text = ""
+        renewalCountTextField.text = ""
+        summaryTextBox.text = ""
+        financeRateButton.setTitle("18", for: [])
+        taxRateButton.setTitle("8.25", for: [])
+        loanMonthsButton.setTitle("12", for: [])
+        updateView()
+    }
+    
     var job = 0.00
     var totalJob = 0.00
     var tax = 0.00
@@ -78,17 +101,17 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         renewalCountTextField.delegate = self
         summaryTextBox.delegate = self
         pdfViewPane.delegate = self
+        documentInteractionController.delegate = self
         
         if let path = Bundle.main.path(forResource: "Mobility SMAC Fillable", ofType: "pdf") {
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfViewPane.displayMode = .singlePageContinuous
                 pdfViewPane.autoScales = true
-                // pdfView.displayDirection = .horizontal
                 pdfViewPane.document = pdfDocument
             }
         }
-        
+        clearForm(self)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -199,7 +222,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
             + "Down Payment: \t\t" + downPayment.asCurrency + "\n"
             + "Amount Financed: \t" + amountFinanced.asCurrency + "\n"
             + "Monthly Payment: \t" + monthlyPaymtStr + "\n"
-            + "Number of Payments: " + String(Int(loanTerm)) + "\n"
+            + "Number of Payments:  " + String(Int(loanTerm)) + "\n"
             + "Total of Payments: \t" + totalPayments.asCurrency + "\n"
             + "Finance Charge: \t\t" + financeCharge.asCurrency + "\n"
             + "Total Financed Job: \t" + totalFinancedJob.asCurrency
@@ -209,3 +232,12 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
 
 }
 
+extension ViewController: UIDocumentInteractionControllerDelegate {
+    /// If presenting atop a navigation stack, provide the navigation controller in order to animate in a manner consistent with the rest of the platform
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        guard let navVC = self.navigationController else {
+            return self
+        }
+        return navVC
+    }
+}
