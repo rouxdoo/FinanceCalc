@@ -80,6 +80,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     }
     
     var job = 0.00
+    var renewalsTotal = 0.00
     var totalJob = 0.00
     var tax = 0.00
     var taxRate = 0.00
@@ -103,7 +104,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         pdfViewPane.delegate = self
         documentInteractionController.delegate = self
         
-        if let path = Bundle.main.path(forResource: "Mobility SMAC Fillable", ofType: "pdf") {
+        //        if let path = Bundle.main.path(forResource: "Mobility SMAC Fillable", ofType: "pdf") {
+        if let path = Bundle.main.path(forResource: "SMAC Scanned Fillable", ofType: "pdf") {
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfViewPane.displayMode = .singlePageContinuous
@@ -124,13 +126,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         let annotations = document!.page(at: 0)?.annotations
         for annotation in annotations! {
             switch annotation.fieldName {
-            // this data fills mobility smac fillable -pdfescape.com
-            case "Buyer":
-                annotation.widgetStringValue = "Enter buyer's info..."
-            case "Service Address":
-                annotation.widgetStringValue = "Same as above"
-            case "TIL Apr":
-                annotation.widgetStringValue = String(Int(apr * 100)) + "% APR"
+            // this data fills SMAC Scanned Fillable -pdfescape.com
+            case "TIL APR":
+                annotation.widgetStringValue = String(Int(apr * 100))
             case "TIL Finance Charge":
                 annotation.widgetStringValue = financeCharge.asCurrency
             case "TIL Amount Financed":
@@ -143,7 +141,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
                 annotation.widgetStringValue = totalFinancedJob.asCurrency
             case "Number of Payments":
                 annotation.widgetStringValue = String(Int(loanTerm))
-            case "Payment Amount":
+            case "Monthly Payment":
                 annotation.widgetStringValue = monthlyPayment.asCurrency
             case "First Payment Date":
                 let pmtdate = Calendar.current.date(byAdding: .day, value: 45, to: Date())
@@ -155,17 +153,15 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
                 let formatter = DateFormatter()
                 formatter.dateFormat = "MM/dd/yyyy"
                 annotation.widgetStringValue = formatter.string(from: today!)
-            case .none:
-                annotation.widgetStringValue =  "case .none"
-            case .some(_):
-                annotation.widgetStringValue = "case .some(_)"
-            }
-        }
-        let annotations2 = document!.page(at: 1)?.annotations
-        for annotation in annotations2! {
-            switch annotation.fieldName {
+                // added for Scanned SMAC Fillable
             case "Cash Price":
                 annotation.widgetStringValue = totalJob.asCurrency
+            case "Renewal Years":
+                annotation.widgetStringValue = renewalCountTextField.text
+            case "Renewals per Year":
+                annotation.widgetStringValue = renewalsTextField.text
+            case "Renewals Total":
+                annotation.widgetStringValue = renewalsTotal.asCurrency
             case "Sales Tax":
                 annotation.widgetStringValue = tax.asCurrency
             case "Total Cash Price":
@@ -178,12 +174,14 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
                 annotation.widgetStringValue = financeCharge.asCurrency
             case "Total of Payments":
                 annotation.widgetStringValue = totalPayments.asCurrency
-            case "Description of Services":
+            case "Total Sale Price":
+                annotation.widgetStringValue = totalFinancedJob.asCurrency
+            case "Services":
                 annotation.widgetStringValue = "Services...."
             case .none:
-                annotation.widgetStringValue = "case .none"
+                annotation.widgetStringValue =  ""
             case .some(_):
-                annotation.widgetStringValue = "case .some()"
+                annotation.widgetStringValue = ""
             }
         }
     }
@@ -191,7 +189,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         job = Double(jobTextField.text ?? "0") ?? 0.00
         let rencount = Double(renewalCountTextField.text ?? "0") ?? 0.00
         let renamt = Double(renewalsTextField.text ?? "0") ?? 0.00
-        totalJob = job + (renamt * rencount)
+        renewalsTotal = renamt * rencount
+        totalJob = job + renewalsTotal
         let taxString = taxRateButton.currentTitle
         taxRate = Double(taxString ?? "8.25")! / 100
         tax = totalJob * taxRate
