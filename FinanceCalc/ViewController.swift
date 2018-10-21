@@ -158,7 +158,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
                 annotation.widgetStringValue = formatter.string(from: today!)
                 // added for Scanned SMAC Fillable
             case "Cash Price":
-                annotation.widgetStringValue = totalJob.asCurrency
+                annotation.widgetStringValue = job.asCurrency
             case "Renewal Years":
                 annotation.widgetStringValue = renewalCountTextField.text
             case "Renewals per Year":
