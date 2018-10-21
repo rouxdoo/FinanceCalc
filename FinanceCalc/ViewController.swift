@@ -125,6 +125,9 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         let document = pdfViewPane.document
         let annotations = document!.page(at: 0)?.annotations
         for annotation in annotations! {
+            if (annotation.widgetFieldType == .button) {
+                continue
+            }
             switch annotation.fieldName {
             // this data fills SMAC Scanned Fillable -pdfescape.com
             case "TIL APR":

@@ -12,9 +12,8 @@
 		D33C9D012177EDA400EF96B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33C9CFF2177EDA400EF96B4 /* Main.storyboard */; };
 		D33C9D032177EDA500EF96B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D33C9D022177EDA500EF96B4 /* Assets.xcassets */; };
 		D33C9D062177EDA500EF96B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33C9D042177EDA500EF96B4 /* LaunchScreen.storyboard */; };
-		D389FB8A217958FB00DB276E /* Mobility SMAC Fillable.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D389FB89217958FB00DB276E /* Mobility SMAC Fillable.pdf */; };
 		D389FB8C2179639B00DB276E /* Currency+conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D389FB8B2179639B00DB276E /* Currency+conversion.swift */; };
-		D389FB98217C2FE300DB276E /* SMAC Scanned Fillable.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D389FB97217C2FE300DB276E /* SMAC Scanned Fillable.pdf */; };
+		D389FBA0217CE04E00DB276E /* SMAC Scanned Fillable.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D389FB9F217CE04E00DB276E /* SMAC Scanned Fillable.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,9 +24,8 @@
 		D33C9D022177EDA500EF96B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D33C9D052177EDA500EF96B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D33C9D072177EDA500EF96B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D389FB89217958FB00DB276E /* Mobility SMAC Fillable.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Mobility SMAC Fillable.pdf"; sourceTree = "<group>"; };
 		D389FB8B2179639B00DB276E /* Currency+conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Currency+conversion.swift"; path = "Extensions/Currency+conversion.swift"; sourceTree = "<group>"; };
-		D389FB97217C2FE300DB276E /* SMAC Scanned Fillable.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "SMAC Scanned Fillable.pdf"; sourceTree = "<group>"; };
+		D389FB9F217CE04E00DB276E /* SMAC Scanned Fillable.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "SMAC Scanned Fillable.pdf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +62,7 @@
 				D33C9CFD2177EDA400EF96B4 /* ViewController.swift */,
 				D33C9CFF2177EDA400EF96B4 /* Main.storyboard */,
 				D33C9D022177EDA500EF96B4 /* Assets.xcassets */,
-				D389FB97217C2FE300DB276E /* SMAC Scanned Fillable.pdf */,
-				D389FB89217958FB00DB276E /* Mobility SMAC Fillable.pdf */,
+				D389FB9F217CE04E00DB276E /* SMAC Scanned Fillable.pdf */,
 				D389FB8B2179639B00DB276E /* Currency+conversion.swift */,
 				D33C9D042177EDA500EF96B4 /* LaunchScreen.storyboard */,
 				D33C9D072177EDA500EF96B4 /* Info.plist */,
@@ -131,10 +128,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D389FBA0217CE04E00DB276E /* SMAC Scanned Fillable.pdf in Resources */,
 				D33C9D062177EDA500EF96B4 /* LaunchScreen.storyboard in Resources */,
 				D33C9D032177EDA500EF96B4 /* Assets.xcassets in Resources */,
-				D389FB98217C2FE300DB276E /* SMAC Scanned Fillable.pdf in Resources */,
-				D389FB8A217958FB00DB276E /* Mobility SMAC Fillable.pdf in Resources */,
 				D33C9D012177EDA400EF96B4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
