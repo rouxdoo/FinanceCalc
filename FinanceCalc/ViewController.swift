@@ -23,6 +23,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     
     let documentInteractionController = UIDocumentInteractionController()
     
+    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0)
+
     @IBAction func percentButton(_ sender: UIButton) {
         var percent = sender.currentTitle
         let alertController = UIAlertController(title: "Enter Percentage", message: "Enter the percentage amount", preferredStyle: .alert)
@@ -79,22 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         updateView()
     }
     
-    var job = 0.00
-    var renewalsTotal = 0.00
-    var totalJob = 0.00
-    var tax = 0.00
-    var taxRate = 0.00
-    var totalCash = 0.00
-    var apr = 0.00
-    var loanTerm = 0.00
-    var downPayment = 0.00
-    var amountFinanced = 0.00
-    var financeCharge = 0.00
-    var monthlyPayment = 0.00
-    var totalPayments = 0.00
-    var totalFinancedJob = 0.00
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         jobTextField.delegate = self
@@ -115,7 +102,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         }
         clearForm(self)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
-        // Do any additional setup after loading the view, typically from a nib.
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
@@ -131,21 +117,21 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
             switch annotation.fieldName {
             // this data fills SMAC Scanned Fillable -pdfescape.com
             case "TIL APR":
-                annotation.widgetStringValue = String(Int(apr * 100))
+                annotation.widgetStringValue = String(fin.apr)
             case "TIL Finance Charge":
-                annotation.widgetStringValue = financeCharge.asCurrency
+                annotation.widgetStringValue = fin.financeCharge().asCurrency
             case "TIL Amount Financed":
-                annotation.widgetStringValue = amountFinanced.asCurrency
+                annotation.widgetStringValue = fin.amountFinanced().asCurrency
             case "TIL Total of Payments":
-                annotation.widgetStringValue = totalPayments.asCurrency
+                annotation.widgetStringValue = fin.totalOfPayments().asCurrency
             case "TIL Down Payment":
-                annotation.widgetStringValue = downPayment.asCurrency
+                annotation.widgetStringValue = fin.downPayment().asCurrency
             case "TIL Total Sale Price":
-                annotation.widgetStringValue = totalFinancedJob.asCurrency
+                annotation.widgetStringValue = fin.totalFinancedJob().asCurrency
             case "Number of Payments":
-                annotation.widgetStringValue = String(Int(loanTerm))
+                annotation.widgetStringValue = String(fin.term)
             case "Monthly Payment":
-                annotation.widgetStringValue = monthlyPayment.asCurrency
+                annotation.widgetStringValue = fin.monthlyPayment().asCurrency
             case "First Payment Date":
                 let pmtdate = Calendar.current.date(byAdding: .day, value: 45, to: Date())
                 let formatter = DateFormatter()
@@ -158,27 +144,27 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
                 annotation.widgetStringValue = formatter.string(from: today!)
                 // added for Scanned SMAC Fillable
             case "Cash Price":
-                annotation.widgetStringValue = job.asCurrency
+                annotation.widgetStringValue = fin.job.asCurrency
             case "Renewal Years":
-                annotation.widgetStringValue = renewalCountTextField.text
+                annotation.widgetStringValue = String(fin.renewalCount)
             case "Renewals per Year":
-                annotation.widgetStringValue = renewalsTextField.text
+                annotation.widgetStringValue = String(fin.renewalAmount)
             case "Renewals Total":
-                annotation.widgetStringValue = renewalsTotal.asCurrency
+                annotation.widgetStringValue = fin.renewalsTotal().asCurrency
             case "Sales Tax":
-                annotation.widgetStringValue = tax.asCurrency
+                annotation.widgetStringValue = fin.taxes().asCurrency
             case "Total Cash Price":
-                annotation.widgetStringValue = totalCash.asCurrency
+                annotation.widgetStringValue = fin.totalCashPrice().asCurrency
             case "Down Payment":
-                annotation.widgetStringValue = downPayment.asCurrency
+                annotation.widgetStringValue = fin.downPayment().asCurrency
             case "Amount Financed":
-                annotation.widgetStringValue = amountFinanced.asCurrency
+                annotation.widgetStringValue = fin.amountFinanced().asCurrency
             case "Finance Charge":
-                annotation.widgetStringValue = financeCharge.asCurrency
+                annotation.widgetStringValue = fin.financeCharge().asCurrency
             case "Total of Payments":
-                annotation.widgetStringValue = totalPayments.asCurrency
+                annotation.widgetStringValue = fin.totalOfPayments().asCurrency
             case "Total Sale Price":
-                annotation.widgetStringValue = totalFinancedJob.asCurrency
+                annotation.widgetStringValue = fin.totalFinancedJob().asCurrency
             case "Services":
                 annotation.widgetStringValue = "Services...."
             case .none:
@@ -189,49 +175,32 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         }
     }
     func updateView() {
-        job = Double(jobTextField.text ?? "0") ?? 0.00
-        let rencount = Double(renewalCountTextField.text ?? "0") ?? 0.00
-        let renamt = Double(renewalsTextField.text ?? "0") ?? 0.00
-        renewalsTotal = renamt * rencount
-        totalJob = job + renewalsTotal
         let taxString = taxRateButton.currentTitle
-        taxRate = Double(taxString ?? "8.25")! / 100
-        tax = totalJob * taxRate
-        totalCash = totalJob + tax
         let dppercentStr = downPercentButton.currentTitle
-        var dppercent = Double(dppercentStr ?? "0")!
-        dppercent = dppercent/100
-        let rawdp = totalCash * dppercent
-        let dpModulo = (totalCash - rawdp).truncatingRemainder(dividingBy: 10)
-        downPayment = rawdp + dpModulo
-        amountFinanced = totalCash - downPayment
         let aprString = financeRateButton.currentTitle
-        apr = Double(aprString ?? "18")! / 100
-        let ratePerPeriod = apr / 12
         let loanTermSt = loanMonthsButton.currentTitle
-        loanTerm = Double(loanTermSt ?? "12")!
-        monthlyPayment = (ratePerPeriod / (1 - (pow(1 + ratePerPeriod, loanTerm * -1)))) * amountFinanced
-        let monthlyPaymtStr = monthlyPayment.asCurrency
-        monthlyPayment = monthlyPaymtStr.currencyToDouble()
-        totalPayments = loanTerm * monthlyPayment
-        financeCharge = totalPayments - amountFinanced
-        totalFinancedJob = totalPayments + downPayment
-        // put it all in a string
-        summaryTextBox.text = "Job Amount: \t\t" + job.asCurrency + "\n"
-            + "With Renewals: \t\t" + totalJob.asCurrency + "\n"
-            + "Tax: \t\t\t\t" + tax.asCurrency + "\n"
-            + "Total Cash Price: \t" + totalCash.asCurrency + "\n"
-            + "Down Payment: \t\t" + downPayment.asCurrency + "\n"
-            + "Amount Financed: \t" + amountFinanced.asCurrency + "\n"
-            + "Monthly Payment: \t" + monthlyPaymtStr + "\n"
-            + "Number of Payments:  " + String(Int(loanTerm)) + "\n"
-            + "Total of Payments: \t" + totalPayments.asCurrency + "\n"
-            + "Finance Charge: \t\t" + financeCharge.asCurrency + "\n"
-            + "Total Financed Job: \t" + totalFinancedJob.asCurrency
+        
+        fin.job = Double(jobTextField.text ?? "0") ?? 0.00
+        fin.renewalCount = Int(renewalCountTextField.text ?? "0") ?? 0
+        fin.renewalAmount = Double(renewalsTextField.text ?? "0") ?? 0.00
+        fin.taxRate = Double(taxString ?? "8.25")!
+        fin.percentDown = Double(dppercentStr ?? "0")!
+        fin.apr = Double(aprString ?? "18")!
+        fin.term = Int(loanTermSt ?? "12")!
+
+        summaryTextBox.text = "Job Amount: \t\t" + fin.job.asCurrency + "\n"
+            + "With Renewals: \t\t" + fin.totalJobPretax().asCurrency + "\n"
+            + "Tax: \t\t\t\t" + fin.taxes().asCurrency + "\n"
+            + "Total Cash Price: \t" + fin.totalCashPrice().asCurrency + "\n"
+            + "Down Payment: \t\t" + fin.downPayment().asCurrency + "\n"
+            + "Amount Financed: \t" + fin.amountFinanced().asCurrency + "\n"
+            + "Monthly Payment: \t" + fin.monthlyPayment().asCurrency + "\n"
+            + "Number of Payments:  " + String(fin.term) + "\n"
+            + "Total of Payments: \t" + fin.totalOfPayments().asCurrency + "\n"
+            + "Finance Charge: \t\t" + fin.financeCharge().asCurrency + "\n"
+            + "Total Financed Job: \t" + fin.totalFinancedJob().asCurrency
         updatePdf()
     }
-
-
 }
 
 extension ViewController: UIDocumentInteractionControllerDelegate {
