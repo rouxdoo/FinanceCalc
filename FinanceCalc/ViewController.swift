@@ -9,7 +9,7 @@
 import UIKit
 import PDFKit
 
-class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, PDFViewDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet weak var renewalsTextField: UITextField!
     @IBOutlet weak var renewalCountTextField: UITextField!
@@ -19,9 +19,8 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
     @IBOutlet weak var downPercentButton: UIButton!
     @IBOutlet weak var loanMonthsButton: UIButton!
     @IBOutlet weak var summaryTextBox: UITextView!
-    @IBOutlet weak var pdfViewPane: PDFView!
-    
-    let documentInteractionController = UIDocumentInteractionController()
+    @IBOutlet weak var renewalCountLabel: UILabel!
+    @IBOutlet weak var loanMonthsLabel: UILabel!
     
     var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0)
 
@@ -60,16 +59,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         self.present(alertController, animated: true, completion: nil)
     }
     
-    @IBAction func shareForm(_ sender: UIBarButtonItem) {
-        let tmpURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent("SMAC.pdf")
-        pdfViewPane.document?.write(to: tmpURL)
-        documentInteractionController.url = tmpURL
-        documentInteractionController.uti = "com.adobe.pdf"
-        //documentInteractionController.presentPreview(animated: true)
-        documentInteractionController.presentOptionsMenu(from: sender, animated: true)
-    }
-    
     @IBAction func clearForm(_ sender: Any) {
         jobTextField.text = ""
         renewalsTextField.text = ""
@@ -88,91 +77,20 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         renewalsTextField.delegate = self
         renewalCountTextField.delegate = self
         summaryTextBox.delegate = self
-        pdfViewPane.delegate = self
-        documentInteractionController.delegate = self
-        
-        //        if let path = Bundle.main.path(forResource: "Mobility SMAC Fillable", ofType: "pdf") {
-        if let path = Bundle.main.path(forResource: "SMAC Scanned Fillable", ofType: "pdf") {
-            let url = URL(fileURLWithPath: path)
-            if let pdfDocument = PDFDocument(url: url) {
-                pdfViewPane.displayMode = .singlePageContinuous
-                pdfViewPane.autoScales = true
-                pdfViewPane.document = pdfDocument
-            }
-        }
         clearForm(self)
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueToPDF" {
+            let pdfViewController = segue.destination as? PDFViewController
+            if let pdf = pdfViewController {
+                pdf.fin = fin
+            }
+        }
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
         updateView()
-    }
-    func updatePdf() {
-        let document = pdfViewPane.document
-        let annotations = document!.page(at: 0)?.annotations
-        for annotation in annotations! {
-            if (annotation.widgetFieldType == .button) {
-                continue
-            }
-            switch annotation.fieldName {
-            // this data fills SMAC Scanned Fillable -pdfescape.com
-            case "TIL APR":
-                annotation.widgetStringValue = String(fin.apr)
-            case "TIL Finance Charge":
-                annotation.widgetStringValue = fin.financeCharge().asCurrency
-            case "TIL Amount Financed":
-                annotation.widgetStringValue = fin.amountFinanced().asCurrency
-            case "TIL Total of Payments":
-                annotation.widgetStringValue = fin.totalOfPayments().asCurrency
-            case "TIL Down Payment":
-                annotation.widgetStringValue = fin.downPayment().asCurrency
-            case "TIL Total Sale Price":
-                annotation.widgetStringValue = fin.totalFinancedJob().asCurrency
-            case "Number of Payments":
-                annotation.widgetStringValue = String(fin.term)
-            case "Monthly Payment":
-                annotation.widgetStringValue = fin.monthlyPayment().asCurrency
-            case "First Payment Date":
-                let pmtdate = Calendar.current.date(byAdding: .day, value: 45, to: Date())
-                let formatter = DateFormatter()
-                formatter.dateFormat = "MM/dd/yyyy"
-                annotation.widgetStringValue = formatter.string(from: pmtdate!)
-            case "Date":
-                let today = Calendar.current.date(byAdding: .second, value: 30, to: Date())
-                let formatter = DateFormatter()
-                formatter.dateFormat = "MM/dd/yyyy"
-                annotation.widgetStringValue = formatter.string(from: today!)
-                // added for Scanned SMAC Fillable
-            case "Cash Price":
-                annotation.widgetStringValue = fin.job.asCurrency
-            case "Renewal Years":
-                annotation.widgetStringValue = String(fin.renewalCount)
-            case "Renewals per Year":
-                annotation.widgetStringValue = String(fin.renewalAmount)
-            case "Renewals Total":
-                annotation.widgetStringValue = fin.renewalsTotal().asCurrency
-            case "Sales Tax":
-                annotation.widgetStringValue = fin.taxes().asCurrency
-            case "Total Cash Price":
-                annotation.widgetStringValue = fin.totalCashPrice().asCurrency
-            case "Down Payment":
-                annotation.widgetStringValue = fin.downPayment().asCurrency
-            case "Amount Financed":
-                annotation.widgetStringValue = fin.amountFinanced().asCurrency
-            case "Finance Charge":
-                annotation.widgetStringValue = fin.financeCharge().asCurrency
-            case "Total of Payments":
-                annotation.widgetStringValue = fin.totalOfPayments().asCurrency
-            case "Total Sale Price":
-                annotation.widgetStringValue = fin.totalFinancedJob().asCurrency
-            case "Services":
-                annotation.widgetStringValue = "Services...."
-            case .none:
-                annotation.widgetStringValue =  ""
-            case .some(_):
-                annotation.widgetStringValue = ""
-            }
-        }
     }
     func updateView() {
         let taxString = taxRateButton.currentTitle
@@ -187,7 +105,42 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
         fin.percentDown = Double(dppercentStr ?? "0")!
         fin.apr = Double(aprString ?? "18")!
         fin.term = Int(loanTermSt ?? "12")!
-
+        
+        var maxterm = 0
+        switch fin.amountFinanced() {
+        case 0..<300:
+            maxterm = 0
+        case 300..<1000:
+            maxterm = 12
+        case 1000..<2000:
+            maxterm = 18
+        case 2000..<3000:
+            maxterm = 24
+        case 3000..<4000:
+            maxterm = 36
+        case 4000..<6000:
+            maxterm = 48
+        case let x where x > 6000:
+            maxterm = 60
+        default:
+            maxterm = 0
+        }
+        if (fin.job > 0) {
+            if (maxterm < fin.term) {
+                fin.term = maxterm
+                renewalCountTextField.textColor = UIColor.red
+                renewalCountLabel.textColor = UIColor.red
+                loanMonthsLabel.textColor = UIColor.red
+                loanMonthsLabel.text = "Max Term " + String(fin.term)
+                loanMonthsButton.setTitleColor(UIColor.red, for: .normal)
+            } else {
+                renewalCountTextField.textColor = UIColor.black
+                renewalCountLabel.textColor = UIColor.black
+                loanMonthsLabel.textColor = UIColor.black
+                loanMonthsLabel.text = "Loan Months"
+                loanMonthsButton.setTitleColor(.black, for: .normal)
+            }
+        }
         summaryTextBox.text = "Job Amount: \t\t" + fin.job.asCurrency + "\n"
             + "With Renewals: \t\t" + fin.totalJobPretax().asCurrency + "\n"
             + "Tax: \t\t\t\t" + fin.taxes().asCurrency + "\n"
@@ -199,16 +152,6 @@ class ViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
             + "Total of Payments: \t" + fin.totalOfPayments().asCurrency + "\n"
             + "Finance Charge: \t\t" + fin.financeCharge().asCurrency + "\n"
             + "Total Financed Job: \t" + fin.totalFinancedJob().asCurrency
-        updatePdf()
     }
 }
 
-extension ViewController: UIDocumentInteractionControllerDelegate {
-    /// If presenting atop a navigation stack, provide the navigation controller in order to animate in a manner consistent with the rest of the platform
-    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
-        guard let navVC = self.navigationController else {
-            return self
-        }
-        return navVC
-    }
-}

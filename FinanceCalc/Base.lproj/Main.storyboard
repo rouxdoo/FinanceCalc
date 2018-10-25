@@ -9,6 +9,51 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="oAM-fy-TCQ">
+            <objects>
+                <viewController id="09S-mW-ZaA" customClass="PDFViewController" customModule="FinanceCalc" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Af-FK-axl">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6j8-3X-xsL">
+                                <rect key="frame" x="20" y="70" width="1004" height="678"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s2S-iP-3RM" customClass="PDFView">
+                                        <rect key="frame" x="0.0" y="0.0" width="1004" height="678"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="s2S-iP-3RM" firstAttribute="leading" secondItem="6j8-3X-xsL" secondAttribute="leading" id="7Zd-0P-qeE"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="6j8-3X-xsL" secondAttribute="bottom" constant="20" symbolic="YES" id="1Y4-Uf-5PZ"/>
+                            <constraint firstItem="6j8-3X-xsL" firstAttribute="top" secondItem="wf1-iW-heN" secondAttribute="top" id="37m-Ub-mzE"/>
+                            <constraint firstItem="wf1-iW-heN" firstAttribute="trailing" secondItem="6j8-3X-xsL" secondAttribute="trailing" id="X2K-gr-UJA"/>
+                            <constraint firstItem="6j8-3X-xsL" firstAttribute="leading" secondItem="3Af-FK-axl" secondAttribute="leadingMargin" id="xsc-fu-CXA"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wf1-iW-heN"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hKi-lP-6BC">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="njk-g2-5wv">
+                            <connections>
+                                <action selector="shareForm:" destination="09S-mW-ZaA" id="OOH-wC-Mva"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="pdfViewPane" destination="s2S-iP-3RM" id="cVB-i6-WtJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sye-d0-sLA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1303" y="134"/>
+        </scene>
         <!--Manual Finance-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -134,20 +179,12 @@
                                     <constraint firstItem="EpZ-Nq-tQE" firstAttribute="centerY" secondItem="Mjo-PX-mvX" secondAttribute="centerY" id="GcE-u6-WRu"/>
                                 </constraints>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOk-xQ-KsF" customClass="PDFView">
-                                <rect key="frame" x="0.0" y="375" width="1024" height="393"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="gOk-xQ-KsF" secondAttribute="bottom" id="53a-pZ-iIX"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gOk-xQ-KsF" secondAttribute="trailing" id="6LW-hs-ZhT"/>
-                            <constraint firstItem="gOk-xQ-KsF" firstAttribute="top" secondItem="3t9-f5-xFh" secondAttribute="bottom" id="LdW-1c-GHv"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3t9-f5-xFh" secondAttribute="trailing" constant="321" id="MN4-2l-Epi"/>
                             <constraint firstItem="3t9-f5-xFh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="34" id="SKI-Va-0cd"/>
                             <constraint firstItem="3t9-f5-xFh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="29" id="XVU-vh-iGS"/>
-                            <constraint firstItem="gOk-xQ-KsF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="z1j-i6-4NO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -157,9 +194,9 @@
                                 <action selector="clearForm:" destination="BYZ-38-t0r" id="7UV-u5-Dxk"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="TT9-yb-PXQ">
+                        <barButtonItem key="rightBarButtonItem" title="PDF" id="TT9-yb-PXQ">
                             <connections>
-                                <action selector="shareForm:" destination="BYZ-38-t0r" id="j4i-Wx-4Ak"/>
+                                <segue destination="09S-mW-ZaA" kind="show" identifier="segueToPDF" id="8sJ-3G-zLs"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -168,7 +205,8 @@
                         <outlet property="financeRateButton" destination="olZ-0c-YP1" id="bB6-mO-AUh"/>
                         <outlet property="jobTextField" destination="kvP-pF-muf" id="28p-nj-T8E"/>
                         <outlet property="loanMonthsButton" destination="8EA-Nl-0cv" id="ja2-zG-EVK"/>
-                        <outlet property="pdfViewPane" destination="gOk-xQ-KsF" id="8bQ-f6-lpg"/>
+                        <outlet property="loanMonthsLabel" destination="HLF-0r-w92" id="umx-II-Poa"/>
+                        <outlet property="renewalCountLabel" destination="oaU-Y9-P7P" id="C9O-NQ-IbU"/>
                         <outlet property="renewalCountTextField" destination="si9-bl-XQr" id="NCc-xd-zKP"/>
                         <outlet property="renewalsTextField" destination="UnM-vb-9jU" id="but-08-pUJ"/>
                         <outlet property="summaryTextBox" destination="EpZ-Nq-tQE" id="tfV-fU-bbn"/>
