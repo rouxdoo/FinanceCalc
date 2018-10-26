@@ -42,12 +42,12 @@
                     <navigationItem key="navigationItem" id="hKi-lP-6BC">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="njk-g2-5wv">
                             <connections>
-                                <action selector="shareForm:" destination="09S-mW-ZaA" id="OOH-wC-Mva"/>
+                                <action selector="sharePdf:" destination="09S-mW-ZaA" id="68Y-37-Krh"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="pdfViewPane" destination="s2S-iP-3RM" id="cVB-i6-WtJ"/>
+                        <outlet property="pdfView" destination="s2S-iP-3RM" id="TSb-r1-elH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sye-d0-sLA" userLabel="First Responder" sceneMemberID="firstResponder"/>
