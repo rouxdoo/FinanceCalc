@@ -23,7 +23,6 @@ class PDFViewController: UIViewController {
         pdfView.document?.write(to: tmpURL)
         documentInteractionController.url = tmpURL
         documentInteractionController.uti = "com.adobe.pdf"
-        //documentInteractionController.presentPreview(animated: true)
         documentInteractionController.presentOptionsMenu(from: sender, animated: true)
     }
     
