@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import PDFKit
 
 class PDFViewController: UIViewController {
+    
+    let documentInteractionController = UIDocumentInteractionController()
+    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0)
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
