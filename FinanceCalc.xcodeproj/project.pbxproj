@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		D33C9CFC2177EDA400EF96B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33C9CFB2177EDA400EF96B4 /* AppDelegate.swift */; };
-		D33C9CFE2177EDA400EF96B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33C9CFD2177EDA400EF96B4 /* ViewController.swift */; };
 		D33C9D012177EDA400EF96B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33C9CFF2177EDA400EF96B4 /* Main.storyboard */; };
 		D33C9D032177EDA500EF96B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D33C9D022177EDA500EF96B4 /* Assets.xcassets */; };
 		D33C9D062177EDA500EF96B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33C9D042177EDA500EF96B4 /* LaunchScreen.storyboard */; };
+		D36F93332184F265003D222F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36F93322184F265003D222F /* ViewController.swift */; };
 		D389FB8C2179639B00DB276E /* Currency+conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D389FB8B2179639B00DB276E /* Currency+conversion.swift */; };
 		D389FBA2217D3A5000DB276E /* SMAC Scanned Fillable.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D389FBA1217D3A5000DB276E /* SMAC Scanned Fillable.pdf */; };
 		D3F8BC182180D5DE00565DCC /* FinanceStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F8BC172180D5DE00565DCC /* FinanceStruct.swift */; };
@@ -21,11 +21,11 @@
 /* Begin PBXFileReference section */
 		D33C9CF82177EDA400EF96B4 /* FinanceCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D33C9CFB2177EDA400EF96B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D33C9CFD2177EDA400EF96B4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D33C9D002177EDA400EF96B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D33C9D022177EDA500EF96B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D33C9D052177EDA500EF96B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D33C9D072177EDA500EF96B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D36F93322184F265003D222F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D389FB8B2179639B00DB276E /* Currency+conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Currency+conversion.swift"; path = "Extensions/Currency+conversion.swift"; sourceTree = "<group>"; };
 		D389FBA1217D3A5000DB276E /* SMAC Scanned Fillable.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "SMAC Scanned Fillable.pdf"; sourceTree = "<group>"; };
 		D3F8BC172180D5DE00565DCC /* FinanceStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceStruct.swift; sourceTree = "<group>"; };
@@ -62,8 +62,8 @@
 		D33C9CFA2177EDA400EF96B4 /* FinanceCalc */ = {
 			isa = PBXGroup;
 			children = (
+				D36F93322184F265003D222F /* ViewController.swift */,
 				D33C9CFF2177EDA400EF96B4 /* Main.storyboard */,
-				D33C9CFD2177EDA400EF96B4 /* ViewController.swift */,
 				D3FE02422182B2F3008847AD /* PDFViewController.swift */,
 				D33C9D022177EDA500EF96B4 /* Assets.xcassets */,
 				D389FBA1217D3A5000DB276E /* SMAC Scanned Fillable.pdf */,
@@ -148,8 +148,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D36F93332184F265003D222F /* ViewController.swift in Sources */,
 				D3FE02432182B2F3008847AD /* PDFViewController.swift in Sources */,
-				D33C9CFE2177EDA400EF96B4 /* ViewController.swift in Sources */,
 				D389FB8C2179639B00DB276E /* Currency+conversion.swift in Sources */,
 				D33C9CFC2177EDA400EF96B4 /* AppDelegate.swift in Sources */,
 				D3F8BC182180D5DE00565DCC /* FinanceStruct.swift in Sources */,
