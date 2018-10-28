@@ -23,6 +23,20 @@ struct FinanceStruct {
     var apr: Double // 18, 6...
     var term: Int // 12, 18, 24, 36...
     var percentDown: Double // 0, 20, 50
+    // applicant data
+    var lastName: String
+    var firstName: String
+    var middleInitial: String
+    var address: String
+    var city: String
+    var state: String
+    var zip: String
+    var phone1: String
+    var phone2: String
+    var email: String
+    var ssn: String
+    var serviceAddress: String
+    var description: String
     
     func monthlyPayment() -> Double {
         let loanTerm = Double(self.term)

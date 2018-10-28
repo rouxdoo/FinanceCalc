@@ -38,7 +38,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0)
+    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", description: "")
     
     @IBAction func percentButton(_ sender: UIButton) {
         var percent = sender.currentTitle
@@ -196,16 +196,21 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             if textView.text.isEmpty {
                 textView.text = "Service Address - same as above"
                 textView.textColor = UIColor.lightGray
+            } else {
+                textView.textColor = UIColor.black
             }
         }
         if (textView == self.descriptionTextBox) {
             if textView.text.isEmpty {
                 textView.text = "Services..."
                 textView.textColor = UIColor.lightGray
+            } else {
+                textView.textColor = UIColor.black
             }
         }
         textView.resignFirstResponder()
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+        self.updateView()
     }
     func updateView() {
         let taxString = taxRateButton.currentTitle
@@ -220,6 +225,20 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         fin.percentDown = Double(dppercentStr ?? "0")!
         fin.apr = Double(aprString ?? "18")!
         fin.term = Int(loanTermSt ?? "12")!
+        
+        fin.lastName = lastNameTextField.text ?? ""
+        fin.firstName = firstNameTextField.text ?? ""
+        fin.middleInitial = miTextField.text ?? ""
+        fin.address = addressTextField.text ?? ""
+        fin.city = cityTextField.text ?? ""
+        fin.state = stateTextField.text ?? ""
+        fin.zip = zipTextField.text ?? ""
+        fin.phone1 = phone1TextField.text ?? ""
+        fin.phone2 = phone2TextField.text ?? ""
+        fin.email = emailTextField.text ?? ""
+        fin.ssn = ssnTextField.text ?? ""
+        fin.serviceAddress = serviceAddressTextBox.text ?? ""
+        fin.description = descriptionTextBox.text ?? ""
         
         var maxterm = 0
         switch fin.amountFinanced() {
