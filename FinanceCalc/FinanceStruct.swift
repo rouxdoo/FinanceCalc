@@ -36,6 +36,9 @@ struct FinanceStruct {
     var email: String
     var ssn: String
     var serviceAddress: String
+    var serviceCity: String
+    var serviceState: String
+    var serviceZip: String
     var description: String
     
     func monthlyPayment() -> Double {

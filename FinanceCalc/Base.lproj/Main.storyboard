@@ -203,7 +203,7 @@
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="family-name"/>
                                                     </textField>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Service Address - same as above" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ixU-2K-deF">
-                                                        <rect key="frame" x="20" y="210" width="309" height="128"/>
+                                                        <rect key="frame" x="20" y="210" width="309" height="36"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -279,6 +279,27 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="phonePad" textContentType="tel"/>
                                                     </textField>
+                                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Service City" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7tu-uR-uP0">
+                                                        <rect key="frame" x="20" y="254" width="309" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="address-level2"/>
+                                                    </textField>
+                                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Service State" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cDJ-YV-j4w">
+                                                        <rect key="frame" x="20" y="292" width="148" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" textContentType="address-level1"/>
+                                                    </textField>
+                                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Service Zip" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3In-HU-0Vl">
+                                                        <rect key="frame" x="182" y="292" width="147" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" textContentType="postal-code"/>
+                                                    </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
@@ -341,11 +362,15 @@
                         <outlet property="miTextField" destination="1sN-jo-40Q" id="roD-6z-qQL"/>
                         <outlet property="phone1TextField" destination="Saq-VL-eXI" id="beD-dm-9Gn"/>
                         <outlet property="phone2TextField" destination="xPj-ac-Qow" id="FJ8-aN-zE9"/>
+                        <outlet property="renewalAmountLabel" destination="ixZ-rU-w3n" id="qZE-Ny-EbR"/>
                         <outlet property="renewalCountLabel" destination="oaU-Y9-P7P" id="C9O-NQ-IbU"/>
                         <outlet property="renewalCountTextField" destination="si9-bl-XQr" id="NCc-xd-zKP"/>
                         <outlet property="renewalsTextField" destination="UnM-vb-9jU" id="but-08-pUJ"/>
                         <outlet property="scrollView" destination="MeZ-wU-kup" id="lWc-76-Zc2"/>
                         <outlet property="serviceAddressTextBox" destination="ixU-2K-deF" id="L1R-Xr-78T"/>
+                        <outlet property="serviceCityTextField" destination="7tu-uR-uP0" id="5kE-uJ-NIb"/>
+                        <outlet property="serviceStateTextField" destination="cDJ-YV-j4w" id="5Ru-C9-AJo"/>
+                        <outlet property="serviceZipTextField" destination="3In-HU-0Vl" id="OMU-1t-soN"/>
                         <outlet property="ssnTextField" destination="gKp-7k-T8m" id="wmk-yX-vEg"/>
                         <outlet property="stateTextField" destination="rsU-cC-itW" id="kzB-Vl-NBH"/>
                         <outlet property="summaryTextBox" destination="EpZ-Nq-tQE" id="tfV-fU-bbn"/>

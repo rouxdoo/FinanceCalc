@@ -13,7 +13,7 @@ class PDFViewController: UIViewController {
 
     let documentInteractionController = UIDocumentInteractionController()
     
-    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", description: "")
+    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", serviceCity: "", serviceState: "", serviceZip: "", description: "")
     
     var pdfData: PDFDocument?
 
@@ -69,6 +69,12 @@ class PDFViewController: UIViewController {
                     annotation.widgetStringValue = fin.ssn
                 case "Service Address":
                     annotation.widgetStringValue = fin.serviceAddress
+                case "Service City":
+                    annotation.widgetStringValue = fin.serviceCity
+                case "Service State":
+                    annotation.widgetStringValue = fin.serviceState
+                case "Service Zip":
+                    annotation.widgetStringValue = fin.serviceZip
                 case "TIL APR":
                     annotation.widgetStringValue = String(fin.apr)
                 case "TIL Finance Charge":

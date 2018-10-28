@@ -21,6 +21,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     @IBOutlet weak var summaryTextBox: UITextView!
     @IBOutlet weak var renewalCountLabel: UILabel!
     @IBOutlet weak var loanMonthsLabel: UILabel!
+    @IBOutlet weak var renewalAmountLabel: UILabel!
     
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var firstNameTextField: UITextField!
@@ -35,10 +36,13 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var serviceAddressTextBox: UITextView!
     @IBOutlet weak var descriptionTextBox: UITextView!
+    @IBOutlet weak var serviceCityTextField: UITextField!
+    @IBOutlet weak var serviceStateTextField: UITextField!
+    @IBOutlet weak var serviceZipTextField: UITextField!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", description: "")
+    var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", serviceCity: "", serviceState: "", serviceZip: "", description: "")
     
     @IBAction func percentButton(_ sender: UIButton) {
         var percent = sender.currentTitle
@@ -95,9 +99,14 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         emailTextField.text = ""
         ssnTextField.text = ""
         serviceAddressTextBox.text = "Service Address - same as above"
+        serviceCityTextField.text = ""
+        serviceStateTextField.text = ""
+        serviceZipTextField.text = ""
         descriptionTextBox.text = "Services..."
         serviceAddressTextBox.textColor = UIColor.lightGray
         descriptionTextBox.textColor = UIColor.lightGray
+        renewalAmountLabel.textColor = UIColor.black
+        renewalCountLabel.textColor = UIColor.black
         updateView()
     }
     
@@ -119,6 +128,9 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         emailTextField.delegate = self
         ssnTextField.delegate = self
         serviceAddressTextBox.delegate = self
+        serviceCityTextField.delegate = self
+        serviceStateTextField.delegate = self
+        serviceZipTextField.delegate = self
         descriptionTextBox.delegate = self
         
         clearForm(self)
@@ -168,6 +180,15 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         }
         else if (textField == self.ssnTextField) {
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 310), animated: true)
+        }
+        else if (textField == self.serviceCityTextField) {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 380), animated: true)
+        }
+        else if (textField == self.serviceStateTextField) {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
+        }
+        else if (textField == self.serviceZipTextField) {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
         }
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -238,8 +259,29 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         fin.email = emailTextField.text ?? ""
         fin.ssn = ssnTextField.text ?? ""
         fin.serviceAddress = serviceAddressTextBox.text ?? ""
+        fin.serviceCity = serviceCityTextField.text ?? ""
+        fin.serviceState = serviceStateTextField.text ?? ""
+        fin.serviceZip = serviceZipTextField.text ?? ""
         fin.description = descriptionTextBox.text ?? ""
         
+        var minren = 0 // minimum renewals if job is renewable
+        switch fin.term {
+        case 12:
+            minren = 1
+        case 18:
+            minren = 1
+        case 24:
+            minren = 2
+        case 36:
+            minren = 3
+        case 48:
+            minren = 4
+        case 60:
+            minren = 5
+        default:
+            minren = 0
+        }
+
         var maxterm = 0
         switch fin.amountFinanced() {
         case 0..<300:
@@ -274,17 +316,33 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
                 loanMonthsLabel.text = "Loan Months"
                 loanMonthsButton.setTitleColor(.black, for: .normal)
             }
+            if (minren > fin.renewalCount) {
+                if (fin.renewalAmount > 0) {
+                    renewalCountLabel.textColor = UIColor.red
+                    renewalAmountLabel.textColor = UIColor.red
+                }
+            } else {
+                renewalCountLabel.textColor = UIColor.black
+                renewalAmountLabel.textColor = UIColor.black
+            }
+        } else {
+            renewalCountTextField.textColor = UIColor.black
+            renewalCountLabel.textColor = UIColor.black
+            loanMonthsLabel.textColor = UIColor.black
+            loanMonthsLabel.text = "Loan Months"
+            loanMonthsButton.setTitleColor(.black, for: .normal)
         }
-        summaryTextBox.text = "Job Amount: \t\t" + fin.job.asCurrency + "\n"
+        summaryTextBox.text = "Finance Job Details:\n\n"
+            + "Number of Payments:  " + String(fin.term) + "\n"
+            + "Monthly Payment: \t" + fin.monthlyPayment().asCurrency + "\n"
+            + "Down Payment: \t\t" + fin.downPayment().asCurrency + "\n\n"
+            + "Job Amount: \t\t" + fin.job.asCurrency + "\n"
             + "With Renewals: \t\t" + fin.totalJobPretax().asCurrency + "\n"
             + "Tax: \t\t\t\t" + fin.taxes().asCurrency + "\n"
-            + "Total Cash Price: \t" + fin.totalCashPrice().asCurrency + "\n"
-            + "Down Payment: \t\t" + fin.downPayment().asCurrency + "\n"
+            + "Total Cash Price: \t" + fin.totalCashPrice().asCurrency + "\n\n"
             + "Amount Financed: \t" + fin.amountFinanced().asCurrency + "\n"
-            + "Monthly Payment: \t" + fin.monthlyPayment().asCurrency + "\n"
-            + "Number of Payments:  " + String(fin.term) + "\n"
-            + "Total of Payments: \t" + fin.totalOfPayments().asCurrency + "\n"
             + "Finance Charge: \t\t" + fin.financeCharge().asCurrency + "\n"
+            + "Total of Payments: \t" + fin.totalOfPayments().asCurrency + "\n"
             + "Total Financed Job: \t" + fin.totalFinancedJob().asCurrency
     }
 }
