@@ -9,7 +9,43 @@
 import UIKit
 import PDFKit
 
-class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    let monthPickerData = [String](arrayLiteral: "12", "18", "24", "36", "48", "60")
+    let renPickerData = [String](arrayLiteral: "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        var pick = 0
+        if (pickerView.tag == 0) {
+            pick = renPickerData.count
+        }
+        else if (pickerView.tag == 1) {
+            pick = monthPickerData.count
+        }
+        return pick
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        var pick = ""
+        if (pickerView.tag == 0) {
+            pick = renPickerData[row]
+        }
+        else if (pickerView.tag == 1) {
+            pick = monthPickerData[row]
+        }
+        return pick
+    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (pickerView.tag == 0) {
+            renewalCountTextField.text = renPickerData[row]
+        }
+        else if (pickerView.tag == 1) {
+            loanMonthsTextField.text = monthPickerData[row]
+        }
+    }
+    
     
     @IBOutlet weak var renewalsTextField: UITextField!
     @IBOutlet weak var renewalCountTextField: UITextField!
@@ -17,7 +53,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     @IBOutlet weak var taxRateButton: UIButton!
     @IBOutlet weak var financeRateButton: UIButton!
     @IBOutlet weak var downPercentButton: UIButton!
-    @IBOutlet weak var loanMonthsButton: UIButton!
+    @IBOutlet weak var loanMonthsTextField: UITextField!
     @IBOutlet weak var summaryTextBox: UITextView!
     @IBOutlet weak var renewalCountLabel: UILabel!
     @IBOutlet weak var loanMonthsLabel: UILabel!
@@ -45,38 +81,33 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", serviceCity: "", serviceState: "", serviceZip: "", description: "")
     
     @IBAction func percentButton(_ sender: UIButton) {
-        var percent = sender.currentTitle
-        let alertController = UIAlertController(title: "Enter Percentage", message: "Enter the percentage amount", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
-            percent = alertController.textFields?[0].text
-            sender.setTitle(percent, for: [])
+        if (sender.tag == 0) {
+            if (sender.currentTitle == "18") {
+                sender.setTitle("6", for: [])
+                sender.setTitleColor(.red, for: [])
+            } else {
+                sender.setTitle("18", for: [])
+                sender.setTitleColor(.black, for: [])
+            }
             self.updateView()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        alertController.addTextField { (textField) in
-            textField.placeholder = percent
-            textField.keyboardType = .decimalPad
+        else {
+            var percent = sender.currentTitle
+            let alertController = UIAlertController(title: "Enter Percentage", message: "Enter the percentage amount", preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
+                percent = alertController.textFields?[0].text
+                sender.setTitle(percent, for: [])
+                self.updateView()
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+            alertController.addTextField { (textField) in
+                textField.placeholder = percent
+                textField.keyboardType = .decimalPad
+            }
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
         }
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    @IBAction func monthsButton(_ sender: UIButton) {
-        var percent = sender.currentTitle
-        let alertController = UIAlertController(title: "Enter Months", message: "Enter the term in months", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Enter", style: .default) { (_) in
-            percent = alertController.textFields?[0].text
-            sender.setTitle(percent, for: [])
-            self.updateView()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
-        alertController.addTextField { (textField) in
-            textField.placeholder = percent
-            textField.keyboardType = .decimalPad
-        }
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func clearForm(_ sender: Any) {
@@ -86,7 +117,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         summaryTextBox.text = ""
         financeRateButton.setTitle("18", for: [])
         taxRateButton.setTitle("8.25", for: [])
-        loanMonthsButton.setTitle("12", for: [])
+        loanMonthsTextField.text = "12"
         lastNameTextField.text = ""
         firstNameTextField.text = ""
         miTextField.text = ""
@@ -115,6 +146,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         jobTextField.delegate = self
         renewalsTextField.delegate = self
         renewalCountTextField.delegate = self
+        loanMonthsTextField.delegate = self
         summaryTextBox.delegate = self
         lastNameTextField.delegate = self
         firstNameTextField.delegate = self
@@ -132,6 +164,17 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         serviceStateTextField.delegate = self
         serviceZipTextField.delegate = self
         descriptionTextBox.delegate = self
+        
+        financeRateButton.tag = 0
+        
+        let renPicker = UIPickerView()
+        renPicker.delegate = self
+        renPicker.tag = 0
+        renewalCountTextField.inputView = renPicker
+        let monthPicker = UIPickerView()
+        monthPicker.delegate = self
+        monthPicker.tag = 1
+        loanMonthsTextField.inputView = monthPicker
         
         clearForm(self)
 
@@ -237,7 +280,6 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         let taxString = taxRateButton.currentTitle
         let dppercentStr = downPercentButton.currentTitle
         let aprString = financeRateButton.currentTitle
-        let loanTermSt = loanMonthsButton.currentTitle
         
         fin.job = Double(jobTextField.text ?? "0") ?? 0.00
         fin.renewalCount = Int(renewalCountTextField.text ?? "0") ?? 0
@@ -245,7 +287,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         fin.taxRate = Double(taxString ?? "8.25")!
         fin.percentDown = Double(dppercentStr ?? "0")!
         fin.apr = Double(aprString ?? "18")!
-        fin.term = Int(loanTermSt ?? "12")!
+        fin.term = Int(loanMonthsTextField.text ?? "12") ?? 0
         
         fin.lastName = lastNameTextField.text ?? ""
         fin.firstName = firstNameTextField.text ?? ""
@@ -308,13 +350,13 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
                 renewalCountLabel.textColor = UIColor.red
                 loanMonthsLabel.textColor = UIColor.red
                 loanMonthsLabel.text = "Max Term " + String(fin.term)
-                loanMonthsButton.setTitleColor(UIColor.red, for: .normal)
+                loanMonthsTextField.textColor = UIColor.red
             } else {
                 renewalCountTextField.textColor = UIColor.black
                 renewalCountLabel.textColor = UIColor.black
                 loanMonthsLabel.textColor = UIColor.black
                 loanMonthsLabel.text = "Loan Months"
-                loanMonthsButton.setTitleColor(.black, for: .normal)
+                loanMonthsTextField.textColor = UIColor.black
             }
             if (minren > fin.renewalCount) {
                 if (fin.renewalAmount > 0) {
@@ -330,7 +372,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             renewalCountLabel.textColor = UIColor.black
             loanMonthsLabel.textColor = UIColor.black
             loanMonthsLabel.text = "Loan Months"
-            loanMonthsButton.setTitleColor(.black, for: .normal)
+            loanMonthsTextField.textColor = UIColor.black
         }
         summaryTextBox.text = "Finance Job Details:\n\n"
             + "Number of Payments:  " + String(fin.term) + "\n"
@@ -344,6 +386,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             + "Finance Charge: \t\t" + fin.financeCharge().asCurrency + "\n"
             + "Total of Payments: \t" + fin.totalOfPayments().asCurrency + "\n"
             + "Total Financed Job: \t" + fin.totalFinancedJob().asCurrency
+        summaryTextBox.isScrollEnabled = false
     }
 }
 

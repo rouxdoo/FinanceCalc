@@ -68,11 +68,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RrM-6A-oKT">
                                         <rect key="frame" x="0.0" y="42" width="1024" height="685"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="85" translatesAutoresizingMaskIntoConstraints="NO" id="3t9-f5-xFh">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="top" spacing="85" translatesAutoresizingMaskIntoConstraints="NO" id="3t9-f5-xFh">
                                                 <rect key="frame" x="39" y="20" width="948" height="276"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="kqJ-fb-LPc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="408.5" height="269.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="133" height="269.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Job Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nr1-Ox-jbJ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="93" height="20.5"/>
@@ -118,8 +118,8 @@
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="Mjo-PX-mvX">
-                                                        <rect key="frame" x="493.5" y="0.0" width="129.5" height="276"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="Mjo-PX-mvX">
+                                                        <rect key="frame" x="377.5" y="0.0" width="129.5" height="276"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Job Amount" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kvP-pF-muf">
                                                                 <rect key="frame" x="0.0" y="0.0" width="129.5" height="30"/>
@@ -160,21 +160,23 @@
                                                                     <action selector="percentButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="112-Pk-GoQ"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8EA-Nl-0cv">
-                                                                <rect key="frame" x="0.0" y="246" width="30" height="30"/>
-                                                                <state key="normal" title="12"/>
-                                                                <connections>
-                                                                    <action selector="monthsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qqZ-g8-WcJ"/>
-                                                                </connections>
-                                                            </button>
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1W1-BB-nYv">
+                                                                <rect key="frame" x="0.0" y="246" width="129.5" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="129.5" id="Ybl-g5-3J7"/>
+                                                                </constraints>
+                                                                <color key="textColor" red="0.0047704505800000001" green="0.10474745219999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <textInputTraits key="textInputTraits"/>
+                                                            </textField>
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstAttribute="trailing" secondItem="kvP-pF-muf" secondAttribute="trailing" id="42s-4a-aht"/>
                                                             <constraint firstAttribute="trailing" secondItem="si9-bl-XQr" secondAttribute="trailing" id="BhW-XN-3l1"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EpZ-Nq-tQE">
-                                                        <rect key="frame" x="708" y="0.0" width="240" height="276"/>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EpZ-Nq-tQE">
+                                                        <rect key="frame" x="688.5" y="0.0" width="259.5" height="276"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -357,8 +359,8 @@
                         <outlet property="firstNameTextField" destination="gtg-Kf-gnd" id="hfa-br-O0Y"/>
                         <outlet property="jobTextField" destination="kvP-pF-muf" id="28p-nj-T8E"/>
                         <outlet property="lastNameTextField" destination="7tr-Hp-stT" id="cnd-rh-gnh"/>
-                        <outlet property="loanMonthsButton" destination="8EA-Nl-0cv" id="ja2-zG-EVK"/>
                         <outlet property="loanMonthsLabel" destination="HLF-0r-w92" id="umx-II-Poa"/>
+                        <outlet property="loanMonthsTextField" destination="1W1-BB-nYv" id="NJV-IQ-JCo"/>
                         <outlet property="miTextField" destination="1sN-jo-40Q" id="roD-6z-qQL"/>
                         <outlet property="phone1TextField" destination="Saq-VL-eXI" id="beD-dm-9Gn"/>
                         <outlet property="phone2TextField" destination="xPj-ac-Qow" id="FJ8-aN-zE9"/>
