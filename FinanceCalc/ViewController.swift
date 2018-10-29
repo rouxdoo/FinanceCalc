@@ -182,7 +182,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 310), animated: true)
         }
         else if (textField == self.serviceCityTextField) {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 380), animated: true)
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
         }
         else if (textField == self.serviceStateTextField) {
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
@@ -206,10 +206,10 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             textView.textColor = UIColor.black
         }
         if (textView == self.serviceAddressTextBox) {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 350), animated: true)
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
         }
         else if (textView == self.descriptionTextBox) {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 350), animated: true)
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 410), animated: true)
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
