@@ -43,6 +43,7 @@ class PDFViewController: UIViewController {
                 if (annotation.widgetFieldType == .button) {
                     continue
                 }
+                annotation.font = UIFont.boldSystemFont(ofSize: 8)
                 switch annotation.fieldName {
                 // this data fills mobility smac fillable -pdfescape.com
                 case "Services":
