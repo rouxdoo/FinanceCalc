@@ -44,6 +44,7 @@ class PDFViewController: UIViewController {
                     continue
                 }
                 annotation.font = UIFont.boldSystemFont(ofSize: 8)
+                annotation.fontColor = UIColor.blue
                 switch annotation.fieldName {
                 // this data fills mobility smac fillable -pdfescape.com
                 case "Services":
