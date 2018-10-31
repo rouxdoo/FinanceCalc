@@ -114,10 +114,14 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         jobTextField.text = ""
         renewalsTextField.text = ""
         renewalCountTextField.text = ""
+        let renpick = renewalCountTextField.inputView as! UIPickerView
+        renpick.selectRow(0, inComponent: 0, animated: false)
         summaryTextBox.text = ""
         financeRateButton.setTitle("18", for: [])
         taxRateButton.setTitle("8.25", for: [])
         loanMonthsTextField.text = "12"
+        let loanpick = loanMonthsTextField.inputView as! UIPickerView
+        loanpick.selectRow(0, inComponent: 0, animated: false)
         lastNameTextField.text = ""
         firstNameTextField.text = ""
         miTextField.text = ""
