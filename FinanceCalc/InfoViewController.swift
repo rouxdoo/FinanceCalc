@@ -16,12 +16,12 @@ class InfoViewController: UIViewController {
     @IBOutlet var pdfView: PDFView!
 
     @IBAction func goWebsite(_ sender: Any) {
-        UIApplication.shared.open(NSURL(string:"https://www.freeprivacypolicy.com/privacy/view/1cdd73e2b7561a5d4b7b7a75b6c1c2ac")! as URL)
+        UIApplication.shared.open(NSURL(string:"https://www.freeprivacypolicy.com/privacy/view/44a31abd0208a57ece4dfc61f4d5472f")! as URL)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let path = Bundle.main.path(forResource: "TXPricing Privacy Policy", ofType: "pdf")
+        let path = Bundle.main.path(forResource: "TXFinanceCalc Privacy Policy", ofType: "pdf")
         let url = URL(fileURLWithPath: path!)
         if  let pdfDocument = PDFDocument(url: url) {
             pdfView.displayMode = .singlePageContinuous
