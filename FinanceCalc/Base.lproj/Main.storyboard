@@ -103,7 +103,7 @@
                                 <rect key="frame" x="0.0" y="59" width="1024" height="698"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0J-Gy-hg5">
-                                        <rect key="frame" x="962" y="15" width="22" height="22"/>
+                                        <rect key="frame" x="977" y="15" width="22" height="22"/>
                                         <connections>
                                             <segue destination="JPs-XN-Yjq" kind="show" id="ycN-JE-N3w"/>
                                         </connections>
@@ -354,7 +354,7 @@
                                     <constraint firstAttribute="bottom" secondItem="RrM-6A-oKT" secondAttribute="bottom" constant="-29" id="CKw-E6-jM3"/>
                                     <constraint firstItem="RrM-6A-oKT" firstAttribute="centerX" secondItem="MeZ-wU-kup" secondAttribute="centerX" id="Hb2-42-PhH"/>
                                     <constraint firstAttribute="trailing" secondItem="RrM-6A-oKT" secondAttribute="trailing" id="HiY-V9-VG6"/>
-                                    <constraint firstAttribute="trailing" secondItem="u0J-Gy-hg5" secondAttribute="trailing" constant="40" id="KA5-u9-uMB"/>
+                                    <constraint firstAttribute="trailing" secondItem="u0J-Gy-hg5" secondAttribute="trailing" constant="25" id="KA5-u9-uMB"/>
                                     <constraint firstItem="u0J-Gy-hg5" firstAttribute="top" secondItem="MeZ-wU-kup" secondAttribute="top" constant="15" id="gXI-MC-SlQ"/>
                                     <constraint firstItem="RrM-6A-oKT" firstAttribute="leading" secondItem="MeZ-wU-kup" secondAttribute="leading" id="jis-0c-l5b"/>
                                     <constraint firstItem="RrM-6A-oKT" firstAttribute="top" secondItem="MeZ-wU-kup" secondAttribute="top" constant="42" id="rPq-WK-oDf"/>
