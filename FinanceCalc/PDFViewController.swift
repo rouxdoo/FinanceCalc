@@ -56,6 +56,8 @@ class PDFViewController: UIViewController {
                     // this data fills mobility smac fillable -pdfescape.com
                     case "Services":
                         annotation.widgetStringValue = fin.description
+                    case "Description of Services":
+                        annotation.widgetStringValue = fin.description
                     case "Last Name":
                         annotation.widgetStringValue = fin.lastName
                     case "First Name":
@@ -86,6 +88,8 @@ class PDFViewController: UIViewController {
                         annotation.widgetStringValue = fin.serviceZip
                     case "TIL APR":
                         annotation.widgetStringValue = String(fin.apr)
+                    case "TIL Apr":
+                        annotation.widgetStringValue = String(fin.apr)
                     case "TIL Finance Charge":
                         annotation.widgetStringValue = fin.financeCharge().asCurrency
                     case "TIL Amount Financed":
@@ -99,6 +103,8 @@ class PDFViewController: UIViewController {
                     case "Number of Payments":
                         annotation.widgetStringValue = String(fin.term)
                     case "Monthly Payment":
+                        annotation.widgetStringValue = fin.monthlyPayment().asCurrency
+                    case "Payment Amount":
                         annotation.widgetStringValue = fin.monthlyPayment().asCurrency
                     case "First Payment Date":
                         let pmtdate = Calendar.current.date(byAdding: .day, value: 45, to: Date())
@@ -133,9 +139,9 @@ class PDFViewController: UIViewController {
                     case "Total Sale Price":
                         annotation.widgetStringValue = fin.totalFinancedJob().asCurrency
                     case .none:
-                        annotation.widgetStringValue =  ""
+                        annotation.widgetStringValue =  ".none case"
                     case .some(_):
-                        annotation.widgetStringValue = ""
+                        annotation.widgetStringValue = "Field Name: " + annotation.fieldName!
                     }
                 }
                 pageCount += 1
