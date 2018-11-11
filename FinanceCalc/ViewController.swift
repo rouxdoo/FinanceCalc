@@ -9,7 +9,9 @@
 import UIKit
 import PDFKit
 
-class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource, FilesViewDelegate {
+    // PassUrl protocol stub
+    var pdfFormUrl: URL?
     
     let monthPickerData = [String](arrayLiteral: "12", "18", "24", "36", "48", "60")
     let renPickerData = [String](arrayLiteral: "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
@@ -79,7 +81,7 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
     @IBOutlet weak var scrollView: UIScrollView!
     
     var fin = FinanceStruct(job: 0, renewalCount: 0, renewalAmount: 0, taxRate: 0, apr: 0, term: 0, percentDown: 0, lastName: "",  firstName: "", middleInitial: "", address: "", city: "", state: "", zip: "", phone1: "", phone2: "", email: "", ssn: "", serviceAddress: "", serviceCity: "", serviceState: "", serviceZip: "", description: "")
-    
+   
     @IBAction func percentButton(_ sender: UIButton) {
         if (sender.tag == 0) {
             if (sender.currentTitle == "18") {
@@ -181,6 +183,12 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
         loanMonthsTextField.inputView = monthPicker
         
         clearForm(self)
+        if UserDefaults.standard.object(forKey: "formurl") == nil {
+            let blank = URL(fileURLWithPath: "")
+            UserDefaults.standard.register(defaults: ["formurl" : blank])
+        } else {
+            pdfFormUrl = UserDefaults.standard.url(forKey: "formurl")
+        }
 
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
     }
@@ -189,7 +197,14 @@ class ManualFinanceViewController: UIViewController, UITextFieldDelegate, UIText
             let pdfViewController = segue.destination as? PDFViewController
             if let pdf = pdfViewController {
                 pdf.fin = fin
+                pdf.pdfFormUrl = pdfFormUrl
+                print("Segue from main to pdfVC")
+                print(pdfFormUrl as Any)
             }
+        }
+        if segue.identifier == "segueToFiles" {
+            let filesVC = segue.destination as? FilesViewController
+            filesVC?.delegate = self
         }
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {
